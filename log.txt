@@ -1,0 +1,162 @@
+2023-05-06 10:07:06.719520 simExchange: ���ݶ��ĺ�Լ, ����С��ģ��ʷ������
+2023-05-06 10:07:54.634601 simExchange: С��ģ��ʷ����������
+2023-05-06 10:07:54.635621 simExchange: �����¼�TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:01'), volume=505416, turnover=20405544960.0, open_interest=1819327, last_price=4038.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4038.0, ask_price_1=4039.0, bid_volume_1=8, ask_volume_1=14)
+2023-05-06 10:07:54.647707 simExchange: �����������
+2023-05-06 10:07:54.657008 simExchange: �������Դ��
+2023-05-06 10:07:54.668817 simExchange: ������������
+2023-05-06 10:07:55.679270 simExchange: �����¼�TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:01.500000'), volume=505635, turnover=20414390272.0, open_interest=1819331, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=414, ask_volume_1=346)
+2023-05-06 10:07:55.681751 simExchange: �����������
+2023-05-06 10:07:55.688896 simExchange: �������Դ��
+2023-05-06 10:07:55.697244 simExchange: �����¼�OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=1, datetime=Timestamp('2023-01-06 09:00:01'), type=<OrderType.LIMIT: '�޼�'>, direction=<Direction.LONG: 1>, offset=<Offset.OPEN: '��'>, order_price=10000, order_volume=1, traded=0, status=<Status.NOTTRADED: 'δ�ɽ�'>, reference='', gateway_name='backtesting')
+2023-05-06 10:07:55.705456 simExchange: �����¼�OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=1, datetime=Timestamp('2023-01-06 09:00:01'), type=<OrderType.LIMIT: '�޼�'>, direction=<Direction.LONG: 1>, offset=<Offset.OPEN: '��'>, order_price=10000, order_volume=1, traded=1, status=<Status.ALLTRADED: 'ȫ���ɽ�'>, reference='', gateway_name='backtesting')
+2023-05-06 10:07:55.715527 simExchange: �����¼�TradeData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=1, tradeid='1', datetime=Timestamp('2023-01-06 09:00:01.500000'), direction=<Direction.LONG: 1>, offset=<Offset.OPEN: '��'>, fill_price=4039.0, fill_volume=1, gateway_name='')
+2023-05-06 10:07:55.723606 simExchange: ������ϳɹ�
+2023-05-06 10:07:56.749335 simExchange: �����¼�TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:02'), volume=506338, turnover=20442789888.0, open_interest=1819717, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=413, ask_volume_1=1)
+2023-05-06 10:07:56.750982 simExchange: �����������
+2023-05-06 10:07:56.758446 simExchange: �������Դ��
+2023-05-06 10:07:57.778394 simExchange: �����¼�TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:02.500000'), volume=506564, turnover=20451919872.0, open_interest=1819815, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=1, ask_volume_1=133)
+2023-05-06 10:07:57.780916 simExchange: �����������
+2023-05-06 10:07:57.792945 simExchange: �������Դ��
+2023-05-06 10:07:58.822278 simExchange: �����¼�TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:03'), volume=506945, turnover=20467312640.0, open_interest=1819810, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=172, ask_volume_1=21)
+2023-05-06 10:07:58.823732 simExchange: �����������
+2023-05-06 10:07:58.832969 simExchange: �������Դ��
+2023-05-06 10:07:58.843246 simExchange: ������������
+2023-05-06 10:07:58.852899 simExchange: ������������
+2023-05-06 10:07:59.863814 simExchange: �����¼�TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:03.500000'), volume=507266, turnover=20480278528.0, open_interest=1819859, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=14, ask_volume_1=120)
+2023-05-06 10:07:59.866005 simExchange: �����������
+2023-05-06 10:07:59.875398 simExchange: �������Դ��
+2023-05-06 10:08:43.895880 simExchange: 根据订阅合约, 加载小规模历史行情中
+2023-05-06 10:09:27.253292 simExchange: 小规模历史行情加载完成
+2023-05-06 10:09:27.254586 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:01'), volume=505416, turnover=20405544960.0, open_interest=1819327, last_price=4038.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4038.0, ask_price_1=4039.0, bid_volume_1=8, ask_volume_1=14)
+2023-05-06 10:09:27.264537 simExchange: 处理行情更新
+2023-05-06 10:09:27.271877 simExchange: 订单尝试撮合
+2023-05-06 10:09:27.282460 simExchange: 处理订单请求
+2023-05-06 10:09:28.294311 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:01.500000'), volume=505635, turnover=20414390272.0, open_interest=1819331, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=414, ask_volume_1=346)
+2023-05-06 10:09:28.295807 simExchange: 处理行情更新
+2023-05-06 10:09:28.306181 simExchange: 订单尝试撮合
+2023-05-06 10:09:28.328230 simExchange: 放入事件OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=1, datetime=Timestamp('2023-01-06 09:00:01'), type=<OrderType.LIMIT: '限价'>, direction=<Direction.LONG: 1>, offset=<Offset.OPEN: '开'>, order_price=10000, order_volume=1, traded=0, status=<Status.NOTTRADED: '未成交'>, reference='', gateway_name='backtesting')
+2023-05-06 10:09:28.343132 simExchange: 放入事件OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=1, datetime=Timestamp('2023-01-06 09:00:01'), type=<OrderType.LIMIT: '限价'>, direction=<Direction.LONG: 1>, offset=<Offset.OPEN: '开'>, order_price=10000, order_volume=1, traded=1, status=<Status.ALLTRADED: '全部成交'>, reference='', gateway_name='backtesting')
+2023-05-06 10:09:28.354920 simExchange: 放入事件TradeData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=1, tradeid='1', datetime=Timestamp('2023-01-06 09:00:01.500000'), direction=<Direction.LONG: 1>, offset=<Offset.OPEN: '开'>, fill_price=4039.0, fill_volume=1, gateway_name='')
+2023-05-06 10:09:28.362776 simExchange: 订单撮合成功
+2023-05-06 10:09:29.387947 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:02'), volume=506338, turnover=20442789888.0, open_interest=1819717, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=413, ask_volume_1=1)
+2023-05-06 10:09:29.389958 simExchange: 处理行情更新
+2023-05-06 10:09:29.399367 simExchange: 订单尝试撮合
+2023-05-06 10:09:30.415486 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:02.500000'), volume=506564, turnover=20451919872.0, open_interest=1819815, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=1, ask_volume_1=133)
+2023-05-06 10:09:30.416889 simExchange: 处理行情更新
+2023-05-06 10:09:30.426284 simExchange: 订单尝试撮合
+2023-05-06 10:09:31.442346 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:03'), volume=506945, turnover=20467312640.0, open_interest=1819810, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=172, ask_volume_1=21)
+2023-05-06 10:09:31.443387 simExchange: 处理行情更新
+2023-05-06 10:09:31.451359 simExchange: 订单尝试撮合
+2023-05-06 10:09:31.463103 simExchange: 处理订单请求
+2023-05-06 10:09:31.471594 simExchange: 处理订单请求
+2023-05-06 10:09:32.488579 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:03.500000'), volume=507266, turnover=20480278528.0, open_interest=1819859, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=14, ask_volume_1=120)
+2023-05-06 10:09:32.490090 simExchange: 处理行情更新
+2023-05-06 10:09:32.505173 simExchange: 订单尝试撮合
+2023-05-06 10:09:32.524425 simExchange: 放入事件OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=2, datetime=Timestamp('2023-01-06 09:00:03'), type=<OrderType.LIMIT: '限价'>, direction=<Direction.SHORT: -1>, offset=<Offset.CLOSE: '平'>, order_price=10000, order_volume=1, traded=0, status=<Status.NOTTRADED: '未成交'>, reference='', gateway_name='backtesting')
+2023-05-06 10:09:32.541875 simExchange: 放入事件OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=2, datetime=Timestamp('2023-01-06 09:00:03'), type=<OrderType.LIMIT: '限价'>, direction=<Direction.SHORT: -1>, offset=<Offset.CLOSE: '平'>, order_price=10000, order_volume=1, traded=1, status=<Status.ALLTRADED: '全部成交'>, reference='', gateway_name='backtesting')
+2023-05-06 10:09:32.558723 simExchange: 放入事件TradeData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=2, tradeid='2', datetime=Timestamp('2023-01-06 09:00:03.500000'), direction=<Direction.SHORT: -1>, offset=<Offset.CLOSE: '平'>, fill_price=4040.0, fill_volume=1, gateway_name='')
+2023-05-06 10:09:32.572125 simExchange: 订单撮合成功
+2023-05-06 10:09:32.585769 simExchange: 放入事件OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=3, datetime=Timestamp('2023-01-06 09:00:03'), type=<OrderType.LIMIT: '限价'>, direction=<Direction.SHORT: -1>, offset=<Offset.OPEN: '开'>, order_price=10000, order_volume=1, traded=0, status=<Status.NOTTRADED: '未成交'>, reference='', gateway_name='backtesting')
+2023-05-06 10:09:32.594127 simExchange: 放入事件OrderData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=3, datetime=Timestamp('2023-01-06 09:00:03'), type=<OrderType.LIMIT: '限价'>, direction=<Direction.SHORT: -1>, offset=<Offset.OPEN: '开'>, order_price=10000, order_volume=1, traded=1, status=<Status.ALLTRADED: '全部成交'>, reference='', gateway_name='backtesting')
+2023-05-06 10:09:32.605130 simExchange: 放入事件TradeData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, orderid=3, tradeid='3', datetime=Timestamp('2023-01-06 09:00:03.500000'), direction=<Direction.SHORT: -1>, offset=<Offset.OPEN: '开'>, fill_price=4040.0, fill_volume=1, gateway_name='')
+2023-05-06 10:09:32.614122 simExchange: 订单撮合成功
+2023-05-06 10:09:33.629435 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:04'), volume=507438, turnover=20487227392.0, open_interest=1819892, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4038.0, ask_price_1=4039.0, bid_volume_1=123, ask_volume_1=2)
+2023-05-06 10:09:33.632647 simExchange: 处理行情更新
+2023-05-06 10:09:33.641288 simExchange: 订单尝试撮合
+2023-05-06 10:09:34.659423 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:04.500000'), volume=507644, turnover=20495548416.0, open_interest=1819955, last_price=4038.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4038.0, ask_price_1=4039.0, bid_volume_1=39, ask_volume_1=25)
+2023-05-06 10:09:34.661389 simExchange: 处理行情更新
+2023-05-06 10:09:34.672204 simExchange: 订单尝试撮合
+2023-05-06 10:09:35.693619 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:05'), volume=507881, turnover=20505122816.0, open_interest=1820029, last_price=4039.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=457, ask_volume_1=2)
+2023-05-06 10:09:35.694943 simExchange: 处理行情更新
+2023-05-06 10:09:35.705953 simExchange: 订单尝试撮合
+2023-05-06 10:09:36.721502 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:05.500000'), volume=508073, turnover=20512880640.0, open_interest=1820093, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=356, ask_volume_1=80)
+2023-05-06 10:09:36.723623 simExchange: 处理行情更新
+2023-05-06 10:09:36.734053 simExchange: 订单尝试撮合
+2023-05-06 10:09:37.768880 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:06'), volume=508314, turnover=20522616832.0, open_interest=1820221, last_price=4041.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4041.0, ask_price_1=4042.0, bid_volume_1=118, ask_volume_1=174)
+2023-05-06 10:09:37.774545 simExchange: 处理行情更新
+2023-05-06 10:09:37.785624 simExchange: 订单尝试撮合
+2023-05-06 10:09:38.808823 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:06.500000'), volume=508578, turnover=20533286912.0, open_interest=1820142, last_price=4042.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4041.0, ask_price_1=4042.0, bid_volume_1=103, ask_volume_1=70)
+2023-05-06 10:09:38.810812 simExchange: 处理行情更新
+2023-05-06 10:09:38.823662 simExchange: 订单尝试撮合
+2023-05-06 10:09:39.848652 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:07'), volume=508814, turnover=20542822400.0, open_interest=1820114, last_price=4041.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=254, ask_volume_1=151)
+2023-05-06 10:09:39.851353 simExchange: 处理行情更新
+2023-05-06 10:09:39.861488 simExchange: 订单尝试撮合
+2023-05-06 10:09:40.878479 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:07.500000'), volume=509264, turnover=20561002496.0, open_interest=1820360, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=280, ask_volume_1=238)
+2023-05-06 10:09:40.880466 simExchange: 处理行情更新
+2023-05-06 10:09:40.890590 simExchange: 订单尝试撮合
+2023-05-06 10:09:41.910514 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:08'), volume=509774, turnover=20581605376.0, open_interest=1820700, last_price=4040.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4039.0, ask_price_1=4040.0, bid_volume_1=61, ask_volume_1=55)
+2023-05-06 10:09:41.911855 simExchange: 处理行情更新
+2023-05-06 10:09:41.922253 simExchange: 订单尝试撮合
+2023-05-06 10:09:42.937529 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:08.500000'), volume=509899, turnover=20586655744.0, open_interest=1820683, last_price=4041.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4040.0, ask_price_1=4041.0, bid_volume_1=134, ask_volume_1=44)
+2023-05-06 10:09:42.939512 simExchange: 处理行情更新
+2023-05-06 10:09:42.953060 simExchange: 订单尝试撮合
+2023-05-06 10:09:43.979945 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:09'), volume=510109, turnover=20595140608.0, open_interest=1820629, last_price=4041.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4041.0, ask_price_1=4042.0, bid_volume_1=122, ask_volume_1=93)
+2023-05-06 10:09:43.982396 simExchange: 处理行情更新
+2023-05-06 10:09:43.991563 simExchange: 订单尝试撮合
+2023-05-06 10:09:45.019966 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:09.500000'), volume=510319, turnover=20603625472.0, open_interest=1820677, last_price=4041.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4041.0, ask_price_1=4042.0, bid_volume_1=46, ask_volume_1=161)
+2023-05-06 10:09:45.022169 simExchange: 处理行情更新
+2023-05-06 10:09:45.034306 simExchange: 订单尝试撮合
+2023-05-06 10:09:46.061087 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:10'), volume=510546, turnover=20612800512.0, open_interest=1820815, last_price=4042.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4042.0, ask_price_1=4043.0, bid_volume_1=37, ask_volume_1=219)
+2023-05-06 10:09:46.064102 simExchange: 处理行情更新
+2023-05-06 10:09:46.075621 simExchange: 订单尝试撮合
+2023-05-06 10:09:47.095246 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:10.500000'), volume=510663, turnover=20617529344.0, open_interest=1820835, last_price=4042.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4042.0, ask_price_1=4043.0, bid_volume_1=14, ask_volume_1=227)
+2023-05-06 10:09:47.097611 simExchange: 处理行情更新
+2023-05-06 10:09:47.105894 simExchange: 订单尝试撮合
+2023-05-06 10:09:48.121363 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:11'), volume=510800, turnover=20623067136.0, open_interest=1820883, last_price=4042.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4041.0, ask_price_1=4042.0, bid_volume_1=48, ask_volume_1=10)
+2023-05-06 10:09:48.122706 simExchange: 处理行情更新
+2023-05-06 10:09:48.129877 simExchange: 订单尝试撮合
+2023-05-06 10:09:49.154259 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:11.500000'), volume=510945, turnover=20628928512.0, open_interest=1820888, last_price=4042.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4042.0, ask_price_1=4043.0, bid_volume_1=82, ask_volume_1=175)
+2023-05-06 10:09:49.156972 simExchange: 处理行情更新
+2023-05-06 10:09:49.166000 simExchange: 订单尝试撮合
+2023-05-06 10:09:50.185262 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:12'), volume=511169, turnover=20637984768.0, open_interest=1820964, last_price=4043.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4042.0, ask_price_1=4043.0, bid_volume_1=27, ask_volume_1=36)
+2023-05-06 10:09:50.187578 simExchange: 处理行情更新
+2023-05-06 10:09:50.196948 simExchange: 订单尝试撮合
+2023-05-06 10:09:51.219385 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:12.500000'), volume=511385, turnover=20646717440.0, open_interest=1821040, last_price=4043.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4043.0, ask_price_1=4044.0, bid_volume_1=68, ask_volume_1=424)
+2023-05-06 10:09:51.222403 simExchange: 处理行情更新
+2023-05-06 10:09:51.237502 simExchange: 订单尝试撮合
+2023-05-06 10:09:52.259660 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:13'), volume=511519, turnover=20652134400.0, open_interest=1821056, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4043.0, ask_price_1=4044.0, bid_volume_1=80, ask_volume_1=414)
+2023-05-06 10:09:52.262616 simExchange: 处理行情更新
+2023-05-06 10:09:52.271155 simExchange: 订单尝试撮合
+2023-05-06 10:09:53.288232 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:13.500000'), volume=511661, turnover=20657876992.0, open_interest=1821036, last_price=4043.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4043.0, ask_price_1=4044.0, bid_volume_1=312, ask_volume_1=346)
+2023-05-06 10:09:53.291217 simExchange: 处理行情更新
+2023-05-06 10:09:53.303320 simExchange: 订单尝试撮合
+2023-05-06 10:09:54.335956 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:14'), volume=512182, turnover=20678944768.0, open_interest=1821072, last_price=4043.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=2, ask_volume_1=1397)
+2023-05-06 10:09:54.337687 simExchange: 处理行情更新
+2023-05-06 10:09:54.352433 simExchange: 订单尝试撮合
+2023-05-06 10:09:55.372793 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:14.500000'), volume=512309, turnover=20684081152.0, open_interest=1821073, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=54, ask_volume_1=1441)
+2023-05-06 10:09:55.376007 simExchange: 处理行情更新
+2023-05-06 10:09:55.387151 simExchange: 订单尝试撮合
+2023-05-06 10:09:56.418156 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:15'), volume=512676, turnover=20698925056.0, open_interest=1821143, last_price=4045.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=169, ask_volume_1=1219)
+2023-05-06 10:09:56.420721 simExchange: 处理行情更新
+2023-05-06 10:09:56.436135 simExchange: 订单尝试撮合
+2023-05-06 10:09:57.466592 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:15.500000'), volume=513293, turnover=20723879936.0, open_interest=1820863, last_price=4043.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4043.0, ask_price_1=4044.0, bid_volume_1=191, ask_volume_1=22)
+2023-05-06 10:09:57.469563 simExchange: 处理行情更新
+2023-05-06 10:09:57.477514 simExchange: 订单尝试撮合
+2023-05-06 10:09:58.492582 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:16'), volume=513494, turnover=20732010496.0, open_interest=1820871, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=208, ask_volume_1=745)
+2023-05-06 10:09:58.494629 simExchange: 处理行情更新
+2023-05-06 10:09:58.503086 simExchange: 订单尝试撮合
+2023-05-06 10:09:59.528968 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:16.500000'), volume=513600, turnover=20736296960.0, open_interest=1820877, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=259, ask_volume_1=668)
+2023-05-06 10:09:59.530993 simExchange: 处理行情更新
+2023-05-06 10:09:59.542744 simExchange: 订单尝试撮合
+2023-05-06 10:10:00.572799 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:17'), volume=513663, turnover=20738844672.0, open_interest=1820900, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=219, ask_volume_1=656)
+2023-05-06 10:10:00.574849 simExchange: 处理行情更新
+2023-05-06 10:10:00.585002 simExchange: 订单尝试撮合
+2023-05-06 10:10:01.603610 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:17.500000'), volume=513846, turnover=20746246144.0, open_interest=1821015, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=153, ask_volume_1=563)
+2023-05-06 10:10:01.606613 simExchange: 处理行情更新
+2023-05-06 10:10:01.618089 simExchange: 订单尝试撮合
+2023-05-06 10:10:02.645483 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:18'), volume=514059, turnover=20754862080.0, open_interest=1821208, last_price=4045.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=135, ask_volume_1=407)
+2023-05-06 10:10:02.647858 simExchange: 处理行情更新
+2023-05-06 10:10:02.657492 simExchange: 订单尝试撮合
+2023-05-06 10:10:03.677520 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:18.500000'), volume=514339, turnover=20766187520.0, open_interest=1821287, last_price=4045.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=133, ask_volume_1=213)
+2023-05-06 10:10:03.682516 simExchange: 处理行情更新
+2023-05-06 10:10:03.694932 simExchange: 订单尝试撮合
+2023-05-06 10:10:04.711434 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:19'), volume=514555, turnover=20774924288.0, open_interest=1821371, last_price=4044.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4044.0, ask_price_1=4045.0, bid_volume_1=102, ask_volume_1=43)
+2023-05-06 10:10:04.714055 simExchange: 处理行情更新
+2023-05-06 10:10:04.726081 simExchange: 订单尝试撮合
+2023-05-06 10:10:05.755527 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:19.500000'), volume=514631, turnover=20777998336.0, open_interest=1821431, last_price=4045.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4045.0, ask_price_1=4046.0, bid_volume_1=97, ask_volume_1=539)
+2023-05-06 10:10:05.757518 simExchange: 处理行情更新
+2023-05-06 10:10:05.768489 simExchange: 订单尝试撮合
+2023-05-06 10:10:06.803416 simExchange: 放入事件TickData(symbol='rb2305', exchange=<Exchange.SHFE: 'SHFE'>, datetime=Timestamp('2023-01-06 09:00:20'), volume=514832, turnover=20786130944.0, open_interest=1821440, last_price=4045.0, highest_price=4055.0, lowest_price=4023.0, bid_price_1=4045.0, ask_price_1=4046.0, bid_volume_1=66, ask_volume_1=431)
+2023-05-06 10:10:06.805484 simExchange: 处理行情更新
+2023-05-06 10:10:06.817124 simExchange: 订单尝试撮合
+2023-05-06 10:10:07.834196 simExchange: 历史数据回放完成
