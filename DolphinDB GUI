@@ -1,0 +1,112 @@
+// 1. 加载数据
+quotes = []
+try {
+    quotes = loadText("IF2503.csv", delimiter=',', skipRows=0)
+    print("数据加载成功，记录数：", quotes.size())
+} catch(ex) {
+    print("数据加载失败，错误信息：", ex)
+    // 不退出，但设置空表避免后续错误
+    quotes = table(1:0, `ActionDay`TradingDay`UpdateTime, [DATE,DATE,SECOND])
+}
+
+// 仅当数据加载成功时继续执行
+if(quotes.size() > 0) {
+    // 2. 检查并修正列类型（确保类型匹配）
+    schema = quotes.schema().colDefs
+    print("原始数据结构：")
+    print(schema)
+
+    // 3. 创建输出表（内存表）
+    outputTable = table(100000:0, `ActionDay`TradingDay`UpdateTime`InstrumentID`LastPrice`HighPrice`LowPrice`OpenPrice`Volume`Turnover`OpenInterest`PreOpenInterest`AveragePrice`ClosePrice`SettlementPrice`PreClosePrice`PreSettlementPrice`CurrDelta`PreDelta`BidPrice1`BidVolume1`BidPrice2`BidVolume2`BidPrice3`BidVolume3`BidPrice4`BidVolume4`BidPrice5`BidVolume5`AskPrice1`AskVolume1`AskPrice2`AskVolume2`AskPrice3`AskVolume3`AskPrice4`AskVolume4`AskPrice5`AskVolume5`UpperLimitPrice`LowerLimitPrice, 
+        [DATE, DATE, SECOND, SYMBOL, DOUBLE, DOUBLE, DOUBLE, DOUBLE, INT, DOUBLE, INT, INT, DOUBLE, SYMBOL, SYMBOL, DOUBLE, DOUBLE, SYMBOL, SYMBOL, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT])
+
+    // 4. 创建流表（用于实时处理）
+    share streamTable(100000:0, `ActionDay`TradingDay`UpdateTime`InstrumentID`LastPrice`HighPrice`LowPrice`OpenPrice`Volume`Turnover`OpenInterest`PreOpenInterest`AveragePrice`ClosePrice`SettlementPrice`PreClosePrice`PreSettlementPrice`CurrDelta`PreDelta`BidPrice1`BidVolume1`BidPrice2`BidVolume2`BidPrice3`BidVolume3`BidPrice4`BidVolume4`BidPrice5`BidVolume5`AskPrice1`AskVolume1`AskPrice2`AskVolume2`AskPrice3`AskVolume3`AskPrice4`AskVolume4`AskPrice5`AskVolume5`UpperLimitPrice`LowerLimitPrice, 
+        [DATE, DATE, SECOND, SYMBOL, DOUBLE, DOUBLE, DOUBLE, DOUBLE, INT, DOUBLE, INT, INT, DOUBLE, SYMBOL, SYMBOL, DOUBLE, DOUBLE, SYMBOL, SYMBOL, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT, DOUBLE, INT]) as replayStream
+
+    // 5. 定义处理函数（计算买卖价差和累计成交量）
+    def processMarketData(mutable outputTable, msg){
+        // 计算实时指标
+        result = select 
+            ActionDay, TradingDay, UpdateTime, InstrumentID, 
+            LastPrice, 
+            (AskPrice1 - BidPrice1) as Spread,
+            cumsum(Volume) as CumulativeVolume,
+            Volume, 
+            Turnover,
+            OpenInterest
+        from msg
+        outputTable.append!(result)
+    }
+
+    // 6. 订阅流表数据
+    subscribeTable(, "replayStream", "processMarketData", 0, processMarketData, {}, {outputTable})
+
+    // 7. 执行行情回放（1倍速实时回放）
+    replaySuccess = false
+    try {
+        replay(
+            inputTables=quotes,
+            outputTables=replayStream,
+            dateColumn="ActionDay",
+            timeColumn="UpdateTime",
+            replayRate=1.0,
+            absoluteRate=true
+        )
+        replaySuccess = true
+    } catch(ex) {
+        print("回放启动失败，错误信息：", ex)
+    }
+
+    // 8. 实时监控函数（仅当回放成功时启动）
+    def monitorReplay() {
+        while(true) {
+            try {
+                // 获取回放进度
+                progress = select count(*) as TotalRecords, 
+                           min(UpdateTime) as StartTime, 
+                           max(UpdateTime) as CurrentTime,
+                           max(UpdateTime)-min(UpdateTime) as Duration
+                    from outputTable
+                
+                // 获取最新10条记录
+                latest = select top 10 UpdateTime, InstrumentID, LastPrice, 
+                        AskPrice1, BidPrice1, (AskPrice1 - BidPrice1) as Spread, Volume 
+                    from outputTable 
+                    order by UpdateTime desc
+                
+                clearConsole()  // 清空控制台
+                print("========== 行情回放监控 ==========")
+                print("回放进度：")
+                print(progress)
+                print("\n最新行情：")
+                print(latest)
+                
+                sleep(3000) // 3秒刷新一次
+            } catch(ex) {
+                print("监控出错：", ex)
+                sleep(3000)
+            }
+        }
+    }
+
+    // 启动监控（仅当回放成功时）
+    if(replaySuccess) {
+        submitJob("monitor", "marketReplayMonitor", monitorReplay)
+        print("行情回放已启动，监控中...")
+    }
+
+    // 停止回放的函数
+    def stopReplay() {
+        try {
+            unsubscribeTable(, "replayStream", "processMarketData")
+            clearTable!(outputTable)
+            cancelJobByName("marketReplayMonitor")
+            print("回放已停止")
+        } catch(ex) {
+            print("停止回放时出错：", ex)
+        }
+    }
+} else {
+    print("因数据加载失败，终止执行后续操作")
+}
