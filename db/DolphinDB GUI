@@ -1,0 +1,170 @@
+/* 行情回放完整脚本 - DolphinDB版本 */
+// 1. 数据加载模块
+def loadData(filePath){
+    try{
+        // 尝试加载CSV文件
+        data = loadText(filePath)
+        print("数据加载成功，记录数：", size(data))
+        return data
+    } catch(ex) {
+        print("数据加载失败：", ex)
+        // 返回空表结构
+        return table(1:0, `ActionDay`TradingDay`UpdateTime, [DATE,DATE,SECOND])
+    }
+}
+
+// 2. 数据预处理模块
+def preprocessData(quotes){
+    // 检查数据是否有效
+    if(size(quotes) == 0){
+        print("空数据表，请检查输入文件")
+        return NULL
+    }
+    
+    // 强制类型转换（确保关键字段类型正确）
+    try{
+        return select 
+            ActionDay, TradingDay, UpdateTime, InstrumentID,
+            double(LastPrice) as LastPrice, double(HighPrice) as HighPrice, double(LowPrice) as LowPrice,
+            double(OpenPrice) as OpenPrice, int(Volume) as Volume, double(Turnover) as Turnover,
+            int(OpenInterest) as OpenInterest, int(PreOpenInterest) as PreOpenInterest,
+            double(AveragePrice) as AveragePrice, ClosePrice, SettlementPrice,
+            double(PreClosePrice) as PreClosePrice, double(PreSettlementPrice) as PreSettlementPrice,
+            CurrDelta, PreDelta,
+            double(BidPrice1) as BidPrice1, int(BidVolume1) as BidVolume1,
+            double(BidPrice2) as BidPrice2, int(BidVolume2) as BidVolume2,
+            double(BidPrice3) as BidPrice3, int(BidVolume3) as BidVolume3,
+            double(BidPrice4) as BidPrice4, int(BidVolume4) as BidVolume4,
+            double(BidPrice5) as BidPrice5, int(BidVolume5) as BidVolume5,
+            double(AskPrice1) as AskPrice1, int(AskVolume1) as AskVolume1,
+            double(AskPrice2) as AskPrice2, int(AskVolume2) as AskVolume2,
+            double(AskPrice3) as AskPrice3, int(AskVolume3) as AskVolume3,
+            double(AskPrice4) as AskPrice4, int(AskVolume4) as AskVolume4,
+            double(AskPrice5) as AskPrice5, int(AskVolume5) as AskVolume5,
+            double(UpperLimitPrice) as UpperLimitPrice, int(LowerLimitPrice) as LowerLimitPrice
+        from quotes
+    } catch(ex) {
+        print("数据预处理失败：", ex)
+        return NULL
+    }
+}
+
+// 3. 回放引擎模块
+def startReplay(quotes){
+    // 创建输出表
+    outputSchema = table(1:0, `UpdateTime`InstrumentID`LastPrice`Spread`CumulativeVolume`Volume`Turnover, [SECOND, SYMBOL, DOUBLE, DOUBLE, LONG, INT, DOUBLE])
+    share outputSchema as outputTable
+    
+    // 创建流表
+    share streamTable(100000:0, quotes.schema().colDefs.name, quotes.schema().colDefs.typeString) as replayStream
+    
+    // 定义处理函数
+    def dataHandler(mutable output, msg){
+        t = select 
+            UpdateTime, InstrumentID, LastPrice,
+            AskPrice1 - BidPrice1 as Spread,
+            cumsum(Volume) as CumulativeVolume,
+            Volume, Turnover
+        from msg
+        output.append!(t)
+    }
+    
+    // 订阅流表
+    subscribeTable(, "replayStream", "replayHandler", 0, dataHandler, outputTable)
+    
+    // 启动回放
+    try{
+        replay(
+            inputTables=quotes,
+            outputTables=replayStream,
+            dateColumn="ActionDay",
+            timeColumn="UpdateTime",
+            replayRate=1.0,
+            absoluteRate=true
+        )
+        print("回放引擎启动成功")
+        return true
+    } catch(ex){
+        print("回放启动失败：", ex)
+        unsubscribeTable(, "replayStream", "replayHandler")
+        return false
+    }
+}
+
+// 4. 监控模块
+def startMonitor(){
+    // 定义监控函数
+    def monitorFunc(){
+        while(true){
+            try{
+                // 获取统计信息
+                stats = select 
+                    count(*) as TotalRecords,
+                    min(UpdateTime) as StartTime,
+                    max(UpdateTime) as EndTime,
+                    max(LastPrice) as MaxPrice,
+                    min(LastPrice) as MinPrice,
+                    sum(Volume) as TotalVolume
+                from outputTable
+                
+                // 获取最新行情
+                latest = select top 5 UpdateTime, InstrumentID, LastPrice, Spread 
+                       from outputTable 
+                       order by UpdateTime desc
+                
+                // 清屏并显示
+                clearConsole()
+                print("====== 行情回放监控 ======")
+                print("<统计信息>")
+                print(stats)
+                print("\n<最新行情>")
+                print(latest)
+                
+                // 3秒刷新
+                sleep(3000)
+            } catch(ex){
+                print("监控异常：", ex)
+                sleep(3000)
+            }
+        }
+    }
+    
+    // 提交监控任务
+    submitJob("marketMonitor", "replayMonitor", monitorFunc)
+    print("监控模块已启动")
+}
+
+// 5. 主程序流程
+def main(){
+    // 加载数据
+    rawData = loadData("IF2503.csv")
+    if(size(rawData) == 0) return
+    
+    // 数据预处理
+    processedData = preprocessData(rawData)
+    if(isNull(processedData)) return
+    
+    // 启动回放
+    if(startReplay(processedData)){
+        // 启动监控
+        startMonitor()
+    }
+}
+
+// 6. 停止函数
+def stopAll(){
+    try{
+        unsubscribeTable(, "replayStream", "replayHandler")
+        cancelJob("marketMonitor")
+        print("已停止所有回放和监控任务")
+    } catch(ex){
+        print("停止操作异常：", ex)
+    }
+}
+
+/* 
+使用说明：
+1. 执行 main() 启动整个系统
+2. 执行 stopAll() 停止所有任务
+3. 监控界面每3秒自动刷新
+*/
