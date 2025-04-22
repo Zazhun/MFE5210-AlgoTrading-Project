@@ -1,97 +1,140 @@
-import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-                             QLabel, QPushButton)
-from PyQt5.QtCore import QThread, pyqtSignal
-from buy_and_hold_backtest import running
-from PyQt5 import QtCore,QtWidgets,QtGui
-import datetime
+# webui-app.py
+import gradio as gr
+import pandas as pd
+import matplotlib
+from datetime import datetime
+from sqlalchemy import create_engine
+from strategy.Strategy import EnhancedRSIStrategyBacktest
+import os
 
-class WorkerThread(QThread):
-    trigger = pyqtSignal(str)
-    finished = pyqtSignal()
+# 配置matplotlib非交互模式
+matplotlib.use('Agg')
 
-    def __init__(self, symbol, s_t, e_t):
-        super().__init__()
-        self.symbol = symbol
-        self.s_t = s_t
-        self.e_t = e_t
+DB_PATH = f'sqlite:///db/financial_data.db'
 
-    def run(self):
-        # 'rb2305'
-        # '2023-01-06 09:00:00'
-        # '2023-01-06 09:00:20'
-        running(self.symbol, datetime.datetime.strptime(self.s_t, '%Y-%m-%d %H:%M:%S'), \
-                datetime.datetime.strptime(self.e_t, '%Y-%m-%d %H:%M:%S'))
+print(f"数据库路径：{DB_PATH}") 
 
-class MyWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
+def create_backtest_interface():
+    with gr.Blocks(title="量化回测系统", theme=gr.themes.Soft()) as app:
+        # 初始化数据库连接
+        engine = create_engine(DB_PATH)
+        
+        # 头部说明
+        gr.Markdown("""
+        #  策略回测平台
+        """)
 
-    def initUI(self):
-        # 设置窗口的位置和大小
-        self.setGeometry(400, 300, 1600, 1200)  
-        # 设置窗口的标题
-        self.setWindowTitle('HappyQuant')
+        # 输入区域
+        with gr.Row(variant="panel"):
+            with gr.Column(scale=2):
+                contract = gr.Dropdown(
+                    label="合约代码",
+                    choices=["IF"],
+                    value="IF"
+                )
+                with gr.Row():  # 新增日期输入行
+                    start_date = gr.Textbox(
+                        label="开始日期",
+                        placeholder="YYYY-MM-DD",
+                        value="2024-01-02"
+                    )
+                    end_date = gr.Textbox(
+                        label="结束日期", 
+                        placeholder="YYYY-MM-DD",
+                        value="2024-04-01"
+                    )
 
-        layout = QVBoxLayout()
-        self.setLayout(layout)
+                param_input = gr.Textbox(
+                    label="策略参数",
+                    placeholder="L=50, S=80"
+                )
+                
+            with gr.Column(scale=1):
+                capital = gr.Number(
+                    label="初始资金(万)",
+                    value=100,
+                    minimum=10,
+                    maximum=1000
+                )
+                commission = gr.Slider(
+                    label="手续费率(%)",
+                    minimum=0.01,
+                    maximum=1.0,
+                    value=0.02,
+                    step=0.01
+                )
 
-        self.mylabel = QLabel('e.g.\nrb2305\n2023-01-06 09:00:00\n2023-01-06 09:00:20', self)
-        layout.addWidget(self.mylabel)
+        # 控制按钮
+        with gr.Row():
+            run_btn = gr.Button("开始回测", variant="primary")
+            gr.ClearButton(components=[param_input, capital])
 
-        self.mybutton = QPushButton('start', self)
-        self.mybutton.clicked.connect(self.startThread)
-        layout.addWidget(self.mybutton)
+        # 结果显示区
+        with gr.Tabs():
+            with gr.TabItem("📈 绩效概览"):
+                plot_output = gr.Plot(label="回测结果")
+                
+            with gr.TabItem("📊 指标统计"):
+                report_output = gr.HTML()
+                
+            with gr.TabItem("💹 数据摘要"):
+                data_stats = gr.DataFrame(
+                    label="行情数据统计",
+                    headers=["统计指标", "值"],
+                    datatype=["str", "number"],
+                    row_count=10,  
+                    col_count=(2, "fixed")
+                )
 
-    def setUI(self, w):
-        # 添加文本标签
-        self.label = QtWidgets.QLabel(w)
-        # 设置标签的左边距，上边距，宽，高
-        self.label.setGeometry(QtCore.QRect(60, 20, 700, 45))
-        # 设置文本标签的字体和大小，粗细等
-        self.label.setFont(QtGui.QFont("Roman times",15))
-        self.label.setText("symbol:")
-        #添加设置一个文本框
-        self.text = QtWidgets.QLineEdit(w)
-        #调整文本框的位置大小
-        self.text.setGeometry(QtCore.QRect(400,20,700,45))
+        # 回测执行函数
+        def execute_backtest(contract, start_date, end_date, params, capital, commission):
+            try:
+                # 从数据库获取数据
+                query = f"""
+                    SELECT * FROM rsi_strategy_results 
+                    WHERE datetime BETWEEN '{start_date}' AND '{end_date}'
+                """
+                df = pd.read_sql_query(query, engine, 
+                                     index_col='datetime', 
+                                     parse_dates=['datetime'])
+                
+                # 初始化策略
+                strategy = EnhancedRSIStrategyBacktest(
+                    df, 
+                    initial_capital=capital*1e4,
+                    commission=commission/100
+                )
+                results = strategy.run_backtest()
+                
+                # 生成图表
+                strategy.plot_results()
+                figure = matplotlib.pyplot.gcf()
+                
+                # 生成报告
+                report = strategy.get_performance_report()
+                
+                # 数据统计
+                stats = df[['close']].describe()\
+                    .reset_index()\
+                    .rename(columns={'index':'统计指标'})
+                
+                return {
+                    plot_output: figure,
+                    report_output: report,
+                    data_stats: stats
+                }
+            except Exception as e:
+                raise gr.Error(f"回测失败: {str(e)}")
 
-        #第二个文本框的设置，同上，注意位置参数
-        self.label_2 = QtWidgets.QLabel(w)
-        self.label_2.setGeometry(QtCore.QRect(60, 100, 700, 45))
-        self.label_2.setFont(QtGui.QFont("Roman times",15))
-        self.label_2.setText("start time:")
-        self.text_2 = QtWidgets.QLineEdit(w)
-        self.text_2.setGeometry(QtCore.QRect(400,100,700,45))
+        # 绑定事件
+        run_btn.click(
+            fn=execute_backtest,
+            inputs=[contract, start_date, end_date, param_input, capital, commission],
+            outputs=[plot_output, report_output, data_stats]
+        )
 
-        #第三个文本框的设置，同上，注意位置参数
-        self.label_3 = QtWidgets.QLabel(w)
-        self.label_3.setGeometry(QtCore.QRect(60, 180, 700, 45))
-        self.label_3.setFont(QtGui.QFont("Roman times",15))
-        self.label_3.setText("end time:")
-        self.text_3 = QtWidgets.QLineEdit(w)
-        self.text_3.setGeometry(QtCore.QRect(400,180,700,45))
+    return app
 
-        w.show()
-
-    def startThread(self):
-        self.mybutton.setDisabled(True)
-        self.work = WorkerThread(self.text.text(), self.text_2.text(), self.text_3.text())
-        self.work.start()
-        self.work.trigger.connect(self.updateLabel)
-        self.work.finished.connect(self.threadFinished)
-        self.updateLabel(str(0))
-
-    def threadFinished(self):
-        self.mybutton.setDisabled(False)
-
-    def updateLabel(self, text):
-        self.mylabel.setText(text)
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    w = MyWidget()
-    w.setUI(w)
-    w.show()
-    sys.exit(app.exec_())
+if __name__ == "__main__":
+    web_app = create_backtest_interface()
+    web_app.launch(debug = True)
