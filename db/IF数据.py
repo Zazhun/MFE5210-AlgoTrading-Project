@@ -24,7 +24,7 @@ class IFData(Base):
 
 
 # 2. 创建数据库（SQLite）
-db_path = 'financial_data.db'
+db_path = 'db/financial_data.db'
 if os.path.exists(db_path):
     os.remove(db_path)
 
@@ -60,7 +60,6 @@ def read_if_data(file_path):
         # 转换日期时间格式
         df['datetime'] = pd.to_datetime(
             df['datetime'],
-            format='%Y-%m-%d %H:%M',  # 匹配"2010-4-20 9:15"格式
             errors='coerce'
         )
 
@@ -93,7 +92,7 @@ def read_if_data(file_path):
 # 4. 主程序
 if __name__ == "__main__":
     # 使用绝对路径确保文件位置正确
-    csv_file = os.path.abspath("IF.csv")
+    csv_file = os.path.abspath("data/IF.csv")
     print(f"尝试从以下路径读取文件: {csv_file}")
 
     # 检查文件是否存在
