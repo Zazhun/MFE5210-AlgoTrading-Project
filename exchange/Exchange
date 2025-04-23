@@ -1,0 +1,203 @@
+from typing import Any, Dict, List
+from datetime import datetime, date, timedelta
+from collections import defaultdict
+from copy import deepcopy
+from pandas import DataFrame
+
+from core.event import Event, EventEngine, EVENT_TICK, EVENT_ORDER, EVENT_TRADE, EVENT_LOG, EVENT_REQUEST
+from datastructure.object import TickData, OrderData, TradeData, ContractData, OrderRequest, LogData
+from datastructure.constant import Interval, Status, Direction
+from datastructure.definition import INTERVAL_DELTA_MAP
+from db.database import get_database, BaseDatabase
+
+
+class BacktestExchange:
+    """模拟撮合交易所"""
+    def __init__(self, event_engine: EventEngine, start: datetime, end: datetime, contract: ContractData):
+        self.engine = event_engine
+        self.start_time, self.end_time = start, end
+        self.contract = contract
+
+        self.ticks: List[TickData] = []
+        self._tick_stream = self._tick_iterator()
+
+        self.tick: TickData = None
+        self.current_time: datetime = None
+        self.order_id = 0
+        self.trade_id = 0
+
+        self.orders: Dict[str, OrderData] = {}
+        self.pending_orders: Dict[str, OrderData] = {}
+        self.trades: Dict[str, TradeData] = {}
+
+        self.daily_summary: Dict[date, DailySummary] = {}
+        self.slippage = 0.0
+
+        self._subscribe_events()
+
+    def _subscribe_events(self):
+        self.engine.register(EVENT_TICK, self._on_tick_event)
+        self.engine.register(EVENT_REQUEST, self._on_order_request)
+
+    def load_ticks(self, symbol: str, exchange) -> None:
+        db: BaseDatabase = get_database()
+        self.ticks.clear()
+        batch_span = timedelta(days=max((self.end_time - self.start_time).days / 10, 1))
+        interval = INTERVAL_DELTA_MAP[Interval.TICK]
+
+        cursor = self.start_time
+        while cursor < self.end_time:
+            end_batch = min(cursor + batch_span, self.end_time)
+            chunk = db.load_tick_data(symbol, exchange, cursor, end_batch)
+            self.ticks.extend(chunk)
+            cursor = end_batch + interval
+
+    def _tick_iterator(self):
+        for tick in self.ticks:
+            yield tick
+
+    def stream_tick(self):
+        try:
+            self.tick = next(self._tick_stream)
+        except StopIteration:
+            self._log("所有 Tick 推送完成")
+            return None
+        else:
+            self.current_time = self.tick.datetime
+            self._handle_tick(self.tick)
+            return self.tick
+
+    def _on_order_request(self, event: Event):
+        self._log("收到订单请求")
+        request: OrderRequest = event.data
+        self.order_id += 1
+        order = request.create_order_data(str(self.order_id), "backtest")
+        self.orders[order.orderid] = order
+        self.pending_orders[order.orderid] = order
+
+    def _on_tick_event(self, event: Event):
+        self._match_orders()
+        self._update_daily(event.data)
+
+    def _match_orders(self):
+        if not self.tick:
+            return
+        self._log("开始订单撮合")
+        for order in list(self.pending_orders.values()):
+            if order.status == Status.SUBMITTING:
+                order.status = Status.NOTTRADED
+                self._emit(EVENT_ORDER, deepcopy(order))
+
+            match = False
+            price = None
+            if order.direction == Direction.LONG and order.order_price >= self.tick.ask_price_1:
+                price = self.tick.ask_price_1
+                match = True
+            elif order.direction == Direction.SHORT and order.order_price <= self.tick.bid_price_1:
+                price = self.tick.bid_price_1
+                match = True
+
+            if not match or price is None:
+                continue
+
+            order.traded = order.order_volume
+            order.status = Status.ALLTRADED
+            self._emit(EVENT_ORDER, deepcopy(order))
+            self.pending_orders.pop(order.orderid, None)
+
+            self.trade_id += 1
+            trade = TradeData(
+                symbol=order.symbol,
+                exchange=order.exchange,
+                orderid=order.orderid,
+                tradeid=str(self.trade_id),
+                direction=order.direction,
+                offset=order.offset,
+                fill_price=price,
+                fill_volume=order.traded,
+                datetime=self.current_time
+            )
+            self.trades[trade.tradeid] = trade
+            self._emit(EVENT_TRADE, deepcopy(trade))
+            self._log("成交已生成")
+
+    def _update_daily(self, tick: TickData):
+        trade_date = tick.datetime.date()
+        daily = self.daily_summary.get(trade_date)
+        if daily:
+            daily.close_price = tick.last_price
+        else:
+            self.daily_summary[trade_date] = DailySummary(trade_date, tick.last_price)
+
+    def summarize(self) -> DataFrame:
+        for trade in self.trades.values():
+            d = trade.datetime.date()
+            self.daily_summary[d].add_trade(trade)
+
+        previous_close = 0
+        start_position = 0
+        for daily in self.daily_summary.values():
+            daily.evaluate(previous_close, start_position, self.contract.size, self.contract.commission_rate, self.slippage)
+            previous_close = daily.close_price
+            start_position = daily.end_position
+
+        data = defaultdict(list)
+        for d in self.daily_summary.values():
+            for k, v in d.__dict__.items():
+                data[k].append(v)
+
+        return DataFrame.from_dict(data).set_index("date")
+
+    def _emit(self, type_: str, payload: Any):
+        event = Event(type_, payload)
+        self.engine.put(event)
+
+    def _handle_tick(self, tick: TickData):
+        self._emit(EVENT_TICK, tick)
+
+    def _log(self, message: str):
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        text = f"{now} [BacktestExchange] {message}"
+        print(text)
+        with open("log.txt", "a+", encoding="utf-8") as log_file:
+            log_file.write(text + "\n")
+
+
+class DailySummary:
+    def __init__(self, date: date, close_price: float):
+        self.date = date
+        self.close_price = close_price
+        self.trades: List[TradeData] = []
+        self.trade_count = 0
+        self.start_position = 0
+        self.end_position = 0
+        self.trading_pnl = 0.0
+        self.holding_pnl = 0.0
+        self.total_pnl = 0.0
+        self.net_pnl = 0.0
+        self.turnover = 0.0
+        self.commission = 0.0
+        self.slippage = 0.0
+        self.pre_close = 0
+
+    def add_trade(self, trade: TradeData):
+        self.trades.append(trade)
+
+    def evaluate(self, pre_close: float, pos: int, size: int, fee_rate: float, slippage: float):
+        self.pre_close = pre_close
+        self.start_position = pos
+        self.end_position = pos
+
+        self.holding_pnl = self.start_position * (self.close_price - pre_close) * size
+        for trade in self.trades:
+            delta = trade.fill_volume if trade.direction == Direction.LONG else -trade.fill_volume
+            self.end_position += delta
+            self.trade_count += 1
+            self.trading_pnl += delta * (self.close_price - trade.fill_price) * size
+            turnover = trade.fill_volume * trade.fill_price * size
+            self.turnover += turnover
+            self.slippage += trade.fill_volume * size * slippage
+            self.commission += turnover * fee_rate
+
+        self.total_pnl = self.trading_pnl + self.holding_pnl
+        self.net_pnl = self.total_pnl - self.commission - self.slippage
