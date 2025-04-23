@@ -4,5 +4,8 @@ db/futures_market.db
 db/DolphinDB GUI
 db/market_data.db
 db/financial_data.db
-data/IF.csv
 financial_data.db
+strategy/__pycache__/__init__.cpython-312.pyc
+strategy/__pycache__/Strategy.cpython-312.pyc
+strategy/Strategy.py
+data/IF.csv

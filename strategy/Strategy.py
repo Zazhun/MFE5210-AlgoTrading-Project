@@ -217,7 +217,7 @@ class EnhancedRSIStrategyBacktest:
                 border-bottom: 2px solid rgba(var(--primary-color), 0.8);
                 padding-bottom: 8px;
                 margin-bottom: 20px;
-            ">📊 策略绩效报告</h2>
+            ">回测结果报告</h2>
             
             <!-- 三列布局 -->
             <div style="display: flex; gap: 15px; margin-bottom: 20px;">
@@ -262,7 +262,7 @@ class EnhancedRSIStrategyBacktest:
                             ▲ 平均盈利 <span style="float: right;">+{avg_win:.2%}</span>
                         </p>
                         <p style="color: var(--error-color); margin: 5px 0;">
-                            ▼ 平均亏损 <span style="float: right;">-{avg_loss:.2%}</span>
+                            ▼ 平均亏损 <span style="float: right;">{avg_loss:.2%}</span>
                         </p>
                     </div>
                     <div style="flex: 1;">
