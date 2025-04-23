@@ -12,13 +12,13 @@ MFE5210-AlgoTrading-Project/
 ├─ app.py                  # Web 回测界面主程序
 │
 ├─ db/
-│   ├─ IF数据.py           # IF合约数据入库脚本
+│   ├─ IF数据.py           # 合约数据入库脚本
 │   ├─ 建库入库.py         # 市场数据建库与入库脚本
 │   ├─ financial_data.db   # 主数据库
 │   └─ ...                 # 其它数据库相关文件
 │
 ├─ exchange/
-│   └─ Exchange            # 回测撮合引擎（撮合、日结算等）
+│   └─ Exchange            # 回测撮合引擎
 │
 ├─ strategy/
 │   ├─ Data_Process.py     # 数据清洗和处理
@@ -32,7 +32,7 @@ MFE5210-AlgoTrading-Project/
 ## 主要模块说明
 
 - **db/**  
-  数据库相关脚本，包括原始数据的清洗、入库和表结构定义。支持从CSV批量导入IF合约行情数据，并存储为SQL数据库，便于后续分析和回测。
+  数据库相关脚本，包括原始数据的清洗、入库和表结构定义。支持从CSV批量导入合约行情数据，并存储为SQL数据库，便于后续分析和回测。
 
 - **exchange/Exchange**  
   回测撮合引擎，模拟真实交易所的订单撮合、成交生成、日结算等功能。支持订单管理、成交记录、日度统计等，便于策略回测的真实还原。
@@ -69,7 +69,7 @@ MFE5210-AlgoTrading-Project/
    终端运行`pip install -r requirements.txt`安装依赖。
 
 2. **准备数据**  
-   将原始IF合约行情CSV放入 `data/` 目录，运行 `db/IF数据.py` 或 `db/建库入库.py` 完成数据入库。
+   将原始IF合约行情CSV放入 `data/` 目录，运行 `db/IF数据.py`完成数据库初始化。
 
 3. **数据处理**  
    运行 `strategy/Data_Process.py`，生成带有技术指标的策略输入表存入数据库。
